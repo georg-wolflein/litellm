@@ -5652,7 +5652,7 @@ def stream_chunk_builder(  # noqa: PLR0915
             tool_calls_list = processor.get_combined_tool_content(tool_call_chunks)
             _choice = cast(Choices, response.choices[0])
             _choice.message.content = None
-            _choice.message.tool_calls = tool_calls_list
+            _choice.message.tool_calls = tool_calls_list or None
 
         function_call_chunks = [
             chunk

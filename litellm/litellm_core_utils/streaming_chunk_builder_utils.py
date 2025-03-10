@@ -174,6 +174,12 @@ class ChunkProcessor:
             )
         )
 
+        tool_calls_list = [
+            tool_call
+            for tool_call in tool_calls_list
+            if tool_call.function.name is not None
+        ]
+
         return tool_calls_list
 
     def get_combined_function_call_content(
