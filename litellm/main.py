@@ -5681,6 +5681,19 @@ def stream_chunk_builder(  # noqa: PLR0915
             response["choices"][0]["message"]["content"] = (
                 processor.get_combined_content(content_chunks)
             )
+        
+        provider_specific_chunks = [
+            chunk
+            for chunk in chunks
+            if len(chunk["choices"]) > 0
+            and "provider_specific_fields" in chunk["choices"][0]["delta"]
+            and chunk["choices"][0]["delta"]["provider_specific_fields"] is not None
+        ]
+        
+        if len(provider_specific_chunks) > 0:
+            response["choices"][0]["message"]["provider_specific_fields"] = (
+                processor.get_combined_provider_specific_fields(provider_specific_chunks)
+            )
 
         audio_chunks = [
             chunk

@@ -1,4 +1,5 @@
 import base64
+from collections import defaultdict
 import time
 from typing import Any, Dict, List, Optional, Union
 
@@ -220,6 +221,18 @@ class ChunkProcessor:
 
         # Update the "content" field within the response dictionary
         return combined_content
+
+    def get_combined_provider_specific_fields(
+        self, chunks: List[Dict[str, Any]]
+    ) -> Dict[str, List[Any]]:
+        provider_specific_fields = defaultdict(list)
+        for chunk in chunks:
+            choices = chunk["choices"]
+            for choice in choices:
+                delta = choice.get("delta", {})
+                for k, v in delta.get("provider_specific_fields", {}).items():
+                    provider_specific_fields[k].append([v])
+        return dict(provider_specific_fields)
 
     def get_combined_audio_content(
         self, chunks: List[Dict[str, Any]]

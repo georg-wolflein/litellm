@@ -871,6 +871,409 @@ def test_stream_chunk_builder_tool_calls_list():
     assert len(tool_calls) == 3
 
 
+def test_stream_chunk_builder_anthropic_citations():
+    init_chunks = [
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631006,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": {
+                            "citation": {
+                                "type": "char_location",
+                                "cited_text": "The sky is blue.",
+                                "document_index": 0,
+                                "document_title": "My Document",
+                                "start_char_index": 20,
+                                "end_char_index": 36
+                            }
+                        },
+                        "content": "",
+                        "role": "assistant",
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631006,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "The sky is blue.",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631006,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "",
+                        "role": "assistant",
+                        "function_call": None,
+                        "tool_calls": [
+                            {
+                                "id": None,
+                                "function": {
+                                    "arguments": "{}",
+                                    "name": None
+                                },
+                                "type": "function",
+                                "index": -1
+                            }
+                        ],
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631006,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 1,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "\n\n",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 2,
+                    "delta": {
+                        "provider_specific_fields": {
+                            "citation": {
+                                "type": "char_location",
+                                "cited_text": "The grass is green. ",
+                                "document_index": 0,
+                                "document_title": "My Document",
+                                "start_char_index": 0,
+                                "end_char_index": 20
+                            }
+                        },
+                        "content": "",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 2,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "The grass is green.",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "",
+                        "role": "assistant",
+                        "function_call": None,
+                        "tool_calls": [
+                            {
+                                "id": None,
+                                "function": {
+                                    "arguments": "{}",
+                                    "name": None
+                                },
+                                "type": "function",
+                                "index": -1
+                            }
+                        ],
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 3,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "\n\n",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 4,
+                    "delta": {
+                        "provider_specific_fields": {
+                            "citation": {
+                                "type": "char_location",
+                                "cited_text": "The grass is green. The sky is blue.",
+                                "document_index": 0,
+                                "document_title": "My Document",
+                                "start_char_index": 0,
+                                "end_char_index": 36
+                            }
+                        },
+                        "content": "",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 4,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "The grass and sky are different colors, with the grass being green and the sky being blue.",
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None,
+            "citations": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": None,
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": "",
+                        "role": "assistant",
+                        "function_call": None,
+                        "tool_calls": [
+                            {
+                                "id": None,
+                                "function": {
+                                    "arguments": "{}",
+                                    "name": None
+                                },
+                                "type": "function",
+                                "index": -1
+                            }
+                        ],
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None
+        },
+        {
+            "id": "chatcmpl-b4f5b195-e1fc-45cb-b203-d60d03ea591c",
+            "created": 1741631007,
+            "model": "claude-3-5-sonnet-latest",
+            "object": "chat.completion.chunk",
+            "system_fingerprint": None,
+            "choices": [
+                {
+                    "finish_reason": "stop",
+                    "index": 0,
+                    "delta": {
+                        "provider_specific_fields": None,
+                        "content": None,
+                        "role": None,
+                        "function_call": None,
+                        "tool_calls": None,
+                        "audio": None
+                    },
+                    "logprobs": None
+                }
+            ],
+            "provider_specific_fields": None,
+            "stream_options": None
+        }
+    ]
+
+    chunks = []
+    for chunk in init_chunks:
+        chunks.append(litellm.ModelResponse(**chunk, stream=True))
+    response = stream_chunk_builder(chunks=chunks)
+
+    print(f"Returned response: {response}")
+    expected_provider_specific_fields = {
+        "citation": [
+            [
+                {
+                    "type": "char_location",
+                    "cited_text": "The sky is blue.",
+                    "document_index": 0,
+                    "document_title": "My Document",
+                    "start_char_index": 20,
+                    "end_char_index": 36,
+                }
+            ],
+            [
+                {
+                    "type": "char_location",
+                    "cited_text": "The grass is green. ",
+                    "document_index": 0,
+                    "document_title": "My Document",
+                    "start_char_index": 0,
+                    "end_char_index": 20,
+                }
+            ],
+            [
+                {
+                    "type": "char_location",
+                    "cited_text": "The grass is green. The sky is blue.",
+                    "document_index": 0,
+                    "document_title": "My Document",
+                    "start_char_index": 0,
+                    "end_char_index": 36,
+                }
+            ],
+        ]
+    }
+
+    print(f"\n\nExpected provider specific fields:\n{expected_provider_specific_fields}\n\n")
+    assert (
+        expected_provider_specific_fields == response.choices[0].message.provider_specific_fields
+    ), "\nGot={}\n, Expected={}\n".format(response.choices[0].message.provider_specific_fields, expected_provider_specific_fields)
+
 import json
 
 
